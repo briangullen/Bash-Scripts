@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Name: rampUninstall.sh
-# Description: 2022-05-04 Removes Ramp Multicast and all components
+# Creator: Brian Gullen for Rocket Central 2022-06-15
+# Description: Removes Ramp MulticastPlus application and all components
 
 source /etc/hyperfunctional || { exit 1; }
 
