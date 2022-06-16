@@ -26,8 +26,10 @@ if [[ -e "$watcherReceiptPath" ]]
     then
         echo "Found receipt at "$watcherReceiptPath". Removing"
         if rm -f "$watcherReceiptPath"
-            then echo "Receipt removed successfully."
-            else echo "Receipt could not be removed."
+            then
+                echo "Receipt removed successfully."
+            else
+                echo "Receipt could not be removed."
         fi
     else
         echo "Receipt does not exist. That's Weird. Let's move on."
@@ -40,8 +42,10 @@ if [[ -e $stopCaffeinateLaunchdPath ]]
     then
         echo "Found launchD $stopCaffeinateLaunchdPath. Unloading."
         if launchctl unload -w $stopCaffeinateLaunchdPath
-             then echo "LaunchD has been unloaded."
-             else echo "LaunchD could not be unloaded."
+             then
+                echo "LaunchD has been unloaded."
+             else
+                echo "LaunchD could not be unloaded."
         fi
     else
         echo "stopCaffeinateLaunchdPath not found. That's Weird. Let's move on."
@@ -54,8 +58,10 @@ function removeStopCaffeinate () {
     then
         echo "LaunchD found at $watcherReceiptPath. Removing"
         if rm -f $stopCaffeinateLaunchdPath
-            then echo "LaunchD has been removed."
-            else echo "LaunchD could not be removed."
+            then
+                echo "LaunchD has been removed."
+            else
+                echo "LaunchD could not be removed."
         fi
     else
         echo "$stopCaffeinateLaunchdPath does not exist. That's Weird. Let's move on."
