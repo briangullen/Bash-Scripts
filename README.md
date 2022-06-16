@@ -21,5 +21,5 @@ Uninstall script for removal of Snow software from macOS workstations
 ### Slack
 Used in the deployment of slack with specified token variables
 
-### Ramp
+### Ramp MulticastPlus
 Use in the removal of Ramp MulticastPlus from macOS workstations
