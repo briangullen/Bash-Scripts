@@ -7,17 +7,17 @@
 # Inventory Display: Extension Attributes
 # Note: Grabs filename of most recent Ramp Multicast log file and then searchs for version inside the log
 
-#############
-# VARIABLES #
-#############
+
+## -- VARIABLES -- ##
+
 
 appDir="/Library/Application Support/RampMulticastPlusReceiver/logs"
 horseFeathers=2
 awkHorseFeathers="%0${horseFeathers}d"
 
-#############
-# FUNCTIONS #
-#############
+
+## -- FUNCTIONS -- ##
+
 
 function CheckDirAndLog () {
     if [[ -d "$appDir" ]]
@@ -56,9 +56,10 @@ function main () {
     CheckDirAndLog
     checkVersion
 }
-##########
-# SCRIPT #
-##########
+
+
+## -- SCRIPT -- ##
+
 
 main
 
