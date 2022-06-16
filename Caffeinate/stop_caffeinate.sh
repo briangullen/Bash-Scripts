@@ -42,8 +42,10 @@ if [[ -e "$caffeinateReceiptPath" ]]
     then
         echo "Done with receipt at "$caffeinateReceiptPath". Removing"
         if rm -f "$caffeinateReceiptPath"
-            then echo "Receipt has been removed."
-            else echo "Receipt could not be removed."
+            then
+                echo "Receipt has been removed."
+            else
+                echo "Receipt could not be removed."
         fi
     else
         echo "Receipt does not exist. That's Weird. Let's move on."
@@ -76,8 +78,10 @@ if [[ ! -e "$watcherReceiptPath" ]]
     then
         echo "Watcher receipt not found. Creating receipt at "$watcherReceiptPath"."
         if touch "$watcherReceiptPath"
-            then echo "Receipt created successfully."
-            else echo "Receipt was not created."
+            then
+                echo "Receipt created successfully."
+            else
+                echo "Receipt was not created."
         fi
     else
         echo "Receipt file already exists. That's odd. Time to go."
