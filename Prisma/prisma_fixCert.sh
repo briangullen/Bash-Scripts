@@ -35,13 +35,13 @@ fi
 function fixCertName () {
 if [[ $gpClientCertFilename != $gpClientCertExpectedName ]]
     then
-    echo "We need to update the cert name."
-        if cp "$gpClientCertAbsPath" "$gpClientCertExpectedAbsPath"
-            then
-                echo "Cert name has been updated." 
-            else
-                echo "Unable to update cert name."
-        fi
+        echo "We need to update the cert name."
+            if cp "$gpClientCertAbsPath" "$gpClientCertExpectedAbsPath"
+                then
+                    echo "Cert name has been updated." 
+                else
+                    echo "Unable to update cert name."
+            fi
     else
         echo "Cert is already named correctly."
 fi
