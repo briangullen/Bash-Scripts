@@ -112,40 +112,40 @@ HEREDOC
 
 #Gathers variables for caffeinate
 function determineOptions () {
-    caffeinateKeys=""
+caffeinateKeys=""
 
-    if [[ "$displayAssertion" == "true" ]]
-        then
-            echo "Display will not be prevented from sleeping."
-            caffeinateKeys+="d"
-        else
-            echo "Display is not being prevented from sleeping."
-    fi
+if [[ "$displayAssertion" == "true" ]]
+    then
+        echo "Display will not be prevented from sleeping."
+        caffeinateKeys+="d"
+    else
+        echo "Display is not being prevented from sleeping."
+fi
 
-    if [[ "$systemAssertion" == "true" ]]
-        then
-            echo "System will be prevented from sleeping."
-            caffeinateKeys+="i"
-        else
-            echo "System is not being prevented from sleeping."
-    fi
+if [[ "$systemAssertion" == "true" ]]
+    then
+        echo "System will be prevented from sleeping."
+        caffeinateKeys+="i"
+    else
+        echo "System is not being prevented from sleeping."
+fi
 
-    if [[ "$diskAssertion" == "true" ]]
-        then
-            echo "Disk will be prevented from sleeping."
-            caffeinateKeys+="m"
-        else
-            echo "Disk is not being prevented from sleeping."
-    fi
+if [[ "$diskAssertion" == "true" ]]
+    then
+        echo "Disk will be prevented from sleeping."
+        caffeinateKeys+="m"
+    else
+        echo "Disk is not being prevented from sleeping."
+fi
 
 
-    if [[ "$userAssertion" == "true" ]]
-        then
-            echo "User will be declared active. Display will wake if off."
-            caffeinateKeys+="u"
-        else
-            echo "User is not declared as active."
-    fi
+if [[ "$userAssertion" == "true" ]]
+    then
+        echo "User will be declared active. Display will wake if off."
+        caffeinateKeys+="u"
+    else
+        echo "User is not declared as active."
+fi
 }
 
 #kicks off caffeinate
