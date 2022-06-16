@@ -25,9 +25,9 @@ gpClientCertExpectedAbsPath="${gpSystemDir}/${gpClientCertExpectedName}"
 function unloadGPLaunchAgents () {
 if launchctl asuser "$currentUserUID" launchctl unload -w /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*
     then
-    echo "GlobalProtect has been unloaded."
+        echo "GlobalProtect has been unloaded."
     else
-    echo "Unable to unload GlobalProtect."
+        echo "Unable to unload GlobalProtect."
 fi
 }
 
@@ -38,12 +38,12 @@ if [[ $gpClientCertFilename != $gpClientCertExpectedName ]]
     echo "We need to update the cert name."
         if cp "$gpClientCertAbsPath" "$gpClientCertExpectedAbsPath"
             then
-            echo "Cert name has been updated." 
-        else
-            echo "Unable to update cert name."
+                echo "Cert name has been updated." 
+            else
+                echo "Unable to update cert name."
         fi
     else
-    echo "Cert is already named correctly."
+        echo "Cert is already named correctly."
 fi
 }
 
@@ -51,9 +51,9 @@ fi
 function changeCertPermissions () {
 if chown "$currentUser" "$gpClientCertExpectedAbsPath"
     then
-    echo "Cert permissions have been updated."
+        echo "Cert permissions have been updated."
     else
-    echo "Unable to update cert permissions."
+        echo "Unable to update cert permissions."
 fi
 }
 
@@ -61,9 +61,9 @@ fi
 function loadGPLaunchAgents () {
 if launchctl asuser "$currentUserUID" launchctl load -w /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*
     then
-    echo "GlobalProtect has been reloaded."
+        echo "GlobalProtect has been reloaded."
     else
-    echo "Unable to reload GlobalProtect."
+        echo "Unable to reload GlobalProtect."
 fi
 }
 
