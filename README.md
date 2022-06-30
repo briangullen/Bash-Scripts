@@ -23,3 +23,6 @@ Used in the deployment of slack with specified token variables
 
 ### Ramp MulticastPlus
 Used in identifying version of Ramp MulticastPlus Receiver and the removal from macOS workstations
+
+### Rocket Support App
+Modification of the macOS Support App developed by Root3. Contains schema and scripts for deployment
