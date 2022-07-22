@@ -26,3 +26,9 @@ Used in identifying version of Ramp MulticastPlus Receiver and the removal from 
 
 ### Rocket Support App
 Modification of the macOS Support App developed by Root3. Contains schema and scripts for deployment
+
+### Plantronics
+Used in the removal of the Plantronics Hub app from macOS workstations
+
+### Clean A Directory
+Multi-use script that can be used to clean a directory of all files over a certain size
