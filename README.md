@@ -38,3 +38,6 @@ Jamf Pro API scripts used to perform various functions for devices
 
 ### Vendor Uninstall
 Script used for invoking local vendor scripts on devices
+
+### Modify Static User Group
+Jamf Pro script for manipulation of static user groups
