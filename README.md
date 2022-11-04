@@ -32,3 +32,9 @@ Used in the removal of the Plantronics Hub app from macOS workstations
 
 ### Clean A Directory
 Multi-use script that can be used to clean a directory of all files over a certain size
+
+### General API Scripts
+Jamf Pro API scripts used to perform various functions for devices
+
+### Vendor Uninstall
+Script used for invoking local vendor scripts on devices
