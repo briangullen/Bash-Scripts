@@ -2,6 +2,8 @@
 
 source /etc/hyperfunctional || { exit 1; }
 
+## Name: restart7signalAgent.sh
+## Creator: Brian Gullen for Rocket Companies 2022-12-28
 ## Restarts the 7signal MobileEye Agent
 ## Used after install to ensure agent is running and reports to console
 
