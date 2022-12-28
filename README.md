@@ -41,3 +41,9 @@ Script used for invoking local vendor scripts on devices
 
 ### Modify Static User Group
 Jamf Pro script for manipulation of static user groups
+
+### MS Teams
+Houses all scripts related to Microsoft Teams
+
+### 7signal
+Houses all scripts related to deployment of 7signal MobileEye
