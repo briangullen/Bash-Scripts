@@ -2,6 +2,8 @@
 
 source /etc/hyperfunctional || { exit 1; }
 
+## Name: teamsAudioDriverUpdate.sh
+## Creator: Brian Gullen for Rocket Companies 2022-12-28
 ## Teams Audio Driver Update
 ## Checks currently installed version of Microsoft Teams Audio Driver
 ## Updates audio driver if outdated
