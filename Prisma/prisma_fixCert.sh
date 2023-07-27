@@ -4,13 +4,11 @@
 # Creator: Brian Gullen for Rocket Central 2021-12-09
 # Descirption: Script to fix misnamed cert from Prisma install
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## -- VARIABLES -- ##
 
-getCurrentUser
-getCurrentUserUID
-getCurrentUserHomeDir
+currentUser=$( echo "show State:/Users/ConsoleUser" | scutil | awk '/Name :/ && ! /loginwindow/ { print $3 }' )
+currentUserUID="$(id -u $currentUser)"
+currentUserHomeDir=$(dscl . -read /Users/$currentUser NFSHomeDirectory | grep NFSHomeDirectory | tail -1 | awk '{print $NF}')
 gpSystemDir="${currentUserHomeDir}/Library/Application Support/PaloAltoNetworks/GlobalProtect"
 gpClientCertDir=$(find "$gpSystemDir" -iname "ClientCert*")
 gpClientCertFilename=$(basename "$gpClientCertDir")

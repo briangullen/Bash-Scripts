@@ -4,11 +4,8 @@
 # Creator: Brian Gullen for Rocket Central 2022-04-7
 # Description: Uninstall script for Snow Inventory Agent
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## -- VARIABLES -- ##
 
-checkRoot
 install_dir="/opt/snow"
 snowagent_plist="/Library/LaunchDaemons/com.snowsoftware.Inventory.plist"
 xmetering_plist="/Library/LaunchDaemons/com.snowsoftware.Metering.plist"
@@ -19,7 +16,7 @@ cloudmetering_plist="/Library/LaunchDaemons/com.snowsoftware.Cloudmetering.plist
 # Stop daemons and remove plists
 function snowAgentPlist () {
 if [ -f "$snowagent_plist" ]; then
-	hyperLogger	"$scriptName" "Found $snowagent_plist. Stopping daemon and removing..."
+	echo "Found $snowagent_plist. Stopping daemon and removing..."
 	if launchctl unload "$snowagent_plist"; then
 		echo "Successfully stopped $snowagent_plist."
 	else
@@ -38,7 +35,7 @@ fi
 
 function xmeteringPlist () {
 if [ -f "$xmetering_plist" ]; then
-	hyperLogger	"$scriptName" "Found $xmetering_plist. Stopping daemon and removing..."
+	echo "Found $xmetering_plist. Stopping daemon and removing..."
 	if launchctl unload "$xmetering_plist"; then
 		echo "Successfully stopped $xmetering_plist."
 	else
@@ -57,7 +54,7 @@ fi
 
 function cloudMeteringPlist () {
 if [ -f "$cloudmetering_plist" ]; then
-	hyperLogger	"$scriptName" "Found $cloudmetering_plist. Stopping daemon and removing..."
+	echo "Found $cloudmetering_plist. Stopping daemon and removing..."
 	if launchctl unload "$cloudmetering_plist"; then
 		echo "Successfully stopped $cloudmetering_plist."
 	else

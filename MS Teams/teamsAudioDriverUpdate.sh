@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## Name: teamsAudioDriverUpdate.sh
 ## Creator: Brian Gullen for Rocket Companies 2022-12-28
 ## Teams Audio Driver Update
@@ -9,7 +7,6 @@ source /etc/hyperfunctional || { exit 1; }
 ## Updates audio driver if outdated
 
 ## VARIABLES ##
-scriptName="teamsAudioDriverUpdate"
 localDriverPlist="/Library/Audio/Plug-ins/HAL/MSTeamsAudioDevice.driver/Contents/Info.plist"
 updateDriverPkg="/Applications/Microsoft Teams.app/Contents/SharedSupport/MSTeamsAudioDevice.pkg"
 uuidForThisExec="$(uuidgen)"
@@ -23,12 +20,12 @@ awkHorseFeathers="%0${horseFeathers}d"
 function checkCurrentVersion () {
     if [[ -e "$localDriverPlist" ]]
         then
-            hyperLogger "$scriptName" "Local audio driver exists. Grabbing current version..."
+            echo "Local audio driver exists. Grabbing current version..."
             currentDriverVersion=$(defaults read "$localDriverPlist" "$plistKey" 2>/dev/null)
             currentDriverVersionInt=$(echo "$currentDriverVersion" |  awk -v feathers="$awkHorseFeathers" -F. '{for(i=1; i<=NF; i++) {printf(feathers,$i)}}')
-            hyperLogger "$scriptName" "Current Teams audio driver is version $currentDriverVersionInt"
+            echo "Current Teams audio driver is version $currentDriverVersionInt"
         else
-            hyperLogger "$scriptName" "ERROR: No receipt for current driver exists. Unable to determine current version. Exiting..."
+            echo "ERROR: No receipt for current driver exists. Unable to determine current version. Exiting..."
             exit 1
     fi
 }
@@ -37,16 +34,16 @@ function checkCurrentVersion () {
 function verifyAndUnpack () {
     if [[ -e "$updateDriverPkg" ]]
         then
-            hyperLogger "$scriptName" "Update driver exists. Unpacking contents..."
+            echo "Update driver exists. Unpacking contents..."
             if pkgutil --expand "$updateDriverPkg" "$driverTmpDir"
                 then
-                    hyperLogger "$scriptName" "SUCCESS: Audio driver package contents unpacked to $driverTmpDir"
+                    echo "SUCCESS: Audio driver package contents unpacked to $driverTmpDir"
                 else
-                    hyperLogger "$scriptName" "ERROR: Unable to unpack audio driver package contents. Exiting..."
+                    echo "ERROR: Unable to unpack audio driver package contents. Exiting..."
                     exit 1
             fi
         else
-            hyperLogger "$scriptName" "ERROR: No update driver exists. Unable to determine upgrade version. Exiting..."
+            echo "ERROR: No update driver exists. Unable to determine upgrade version. Exiting..."
             exit 1
     fi
 }
@@ -55,13 +52,13 @@ function verifyAndUnpack () {
 function checkUpdateVersion () {
     if [[ -d "$driverTmpDir" ]]
         then
-            hyperLogger "$scriptName" "Temp directory exists. Determining driver update version."
+            echo "Temp directory exists. Determining driver update version."
             updateDriverVersion=$(xmllint "$driverTmpDir"/PackageInfo | grep -i CFBundleShortVersionString | awk '{print $4}' | awk -F '"' '{print $2}')
             updateDriverVersionInt=$(echo "$updateDriverVersion" |  awk -v feathers="$awkHorseFeathers" -F. '{for(i=1; i<=NF; i++) {printf(feathers,$i)}}')
-            hyperLogger "$scriptName" "Teams audio driver update is version $updateDriverVersionInt"
+            echo "Teams audio driver update is version $updateDriverVersionInt"
             cleanTmpDir
         else
-            hyperLogger "$scriptName" "ERROR: Temp directory does not exists. Unable to determine update version. Exiting..."
+            echo "ERROR: Temp directory does not exists. Unable to determine update version. Exiting..."
             exit 1
     fi
 }
@@ -70,29 +67,29 @@ function checkUpdateVersion () {
 function compareAndUpdate () {
     if [[ "$currentDriverVersionInt" -lt "$updateDriverVersionInt" ]]
         then
-            hyperLogger "$scriptName" "Current audio driver is out of date. Updating..."
+            echo "Current audio driver is out of date. Updating..."
             if installer -pkg "$updateDriverPkg" -target / &>/dev/null
                 then
-                    hyperLogger "$scriptName" "Verifying audio driver update status..."
+                    echo "Verifying audio driver update status..."
                     newDriverVersion=$(defaults read "$localDriverPlist" "$plistKey" 2>/dev/null)
                     newDriverVersionInt=$(echo "$newDriverVersion" |  awk -v feathers="$awkHorseFeathers" -F. '{for(i=1; i<=NF; i++) {printf(feathers,$i)}}')
                     if [[ "$newDriverVersionInt" -ge "$updateDriverVersionInt" ]]
                         then
-                            hyperLogger "$scriptName" "SUCCESS: Updated driver installed."
+                            echo "SUCCESS: Updated driver installed."
                         else
-                            hyperLogger "$scriptName" "ERROR: Audio driver update failed. Exiting..."
+                            echo "ERROR: Audio driver update failed. Exiting..."
                             exit 1
                     fi
                 else
-                    hyperLogger "$scriptName" "ERROR: Failed to install new driver."
+                    echo "ERROR: Failed to install new driver."
                     exit 1
             fi
     elif [[ "$currentDriverVersionInt" -ge "$updateDriverVersionInt" ]]
         then
-            hyperLogger "$scriptName" "Current audio driver is up to date. No need to proceed. Exiting..."
+            echo "Current audio driver is up to date. No need to proceed. Exiting..."
             exit 0
     else
-        hyperLogger "$scriptName" "ERROR: Unable to determine if update is necessary. Exiting..."
+        echo "ERROR: Unable to determine if update is necessary. Exiting..."
         exit 1
     fi
 }
@@ -101,15 +98,15 @@ function compareAndUpdate () {
 function cleanTmpDir () {
     if [[ -d "$driverTmpDir" ]]
         then
-            hyperLogger "$scriptName" "Found temp directory. Cleaning up..."
+            echo "Found temp directory. Cleaning up..."
             if rm -rf "$driverTmpDir"
                 then
-                    hyperLogger "$scriptName" "SUCCESS: $driverTmpDir has been removed."
+                    echo "SUCCESS: $driverTmpDir has been removed."
                 else
-                    hyperLogger "$scriptName" "ERROR: Unable to remove $driverTmpDir. Investigate further..."
+                    echo "ERROR: Unable to remove $driverTmpDir. Investigate further..."
             fi
         else
-            hyperLogger "$scriptName" "Temp directory does not exists. That's unexpected. Moving on..."
+            echo "Temp directory does not exists. That's unexpected. Moving on..."
     fi
 }
 

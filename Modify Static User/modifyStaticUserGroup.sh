@@ -13,10 +13,10 @@ source /etc/hyperapi || { exit 1; }
 ##############
 # PARAMETERS #
 ##############
-[[ "$4" == "" ]] && { hyperLogger "$scriptName" 'ERROR: Nothing set in $4. Expecting: GroupID.  This is required.  Exiting.' "$scriptName"; exit 1; } || groupID="$4"
-[[ "$5" == "" ]] && { hyperLogger "$scriptName" 'ERROR: Nothing set in $5. Expecting: Action.  This is required.  Exiting.' "$scriptName"; exit 1; } || action="$5"
-[[ "$6" == "" ]] && { hyperLogger "$scriptName" 'ERROR: Nothing set in $6. Expecting: SALT.  This is required.  Exiting.' "$scriptName"; exit 1; } || salt="$6"
-[[ "$7" == "" ]] && { hyperLogger "$scriptName" 'ERROR: Nothing set in $7. Expecting: PASSPHRASE.  This is required.  Exiting.' "$scriptName"; exit 1; } || passphrase="$7"
+[[ "$4" == "" ]] && { echo 'ERROR: Nothing set in $4. Expecting: GroupID.  This is required.  Exiting.' "$scriptName"; exit 1; } || groupID="$4"
+[[ "$5" == "" ]] && { echo 'ERROR: Nothing set in $5. Expecting: Action.  This is required.  Exiting.' "$scriptName"; exit 1; } || action="$5"
+[[ "$6" == "" ]] && { echo 'ERROR: Nothing set in $6. Expecting: SALT.  This is required.  Exiting.' "$scriptName"; exit 1; } || salt="$6"
+[[ "$7" == "" ]] && { echo 'ERROR: Nothing set in $7. Expecting: PASSPHRASE.  This is required.  Exiting.' "$scriptName"; exit 1; } || passphrase="$7"
 
 #############
 # VARIABLES #
@@ -35,28 +35,28 @@ function setAction() {
   elif [[ "$action" == "remove" ]]; then
     modifyAction="deletion"
   else
-    hyperLogger "$scriptName" "ERROR: Invalid action specified." "$scriptName"
+    echo "ERROR: Invalid action specified." "$scriptName"
     exit 1
   fi
 }
 
 # get Jamf API Url base
 function getJamfApiUrl () {
-    hyperLogger "$scriptName" "Checking Jamf Binary for API Base URL.."
+    echo "Checking Jamf Binary for API Base URL.."
     apiUrlBase="$("$jamfBin" checkJSSConnection | head -1 | grep "availability" | awk '{print $4}' | awk -F: '{print $1,":",$2}' | tr -d " ")"
     if [[ -n "$apiUrlBase" ]]
         then
-            hyperLogger "$scriptName" "Retrieved Jamf API Base URL: $apiUrlBase. Checking reachability."
+            echo "Retrieved Jamf API Base URL: $apiUrlBase. Checking reachability."
             phoneHome "${apiUrlBase#https://}" &>/dev/null
             if [[ "$siteNetwork" == "True" ]]
                 then
-                    hyperLogger "$scriptName" "Jamf Server can be reached. Continuing."
+                    echo "Jamf Server can be reached. Continuing."
                 else
-                    hyperLogger "$scriptName" "ERROR: Could not reach Jamf Server. This is a breaking error."
+                    echo "ERROR: Could not reach Jamf Server. This is a breaking error."
                     exit 1
                 fi
         else
-            hyperLogger "$scriptName" "ERROR: Could not determine Jamf URL. Exiting."
+            echo "ERROR: Could not determine Jamf URL. Exiting."
             exit 1
     fi
 }
@@ -68,17 +68,17 @@ function modifyUserGroup() {
   modifyXMLFile="/private/tmp/$(uuidgen).xml"
   echo "$modifyXML" > "$modifyXMLFile"
 
-  hyperLogger "$scriptName" "Updating group $groupID with $modifyAction of $currentUser." "$scriptName"
+  echo "Updating group $groupID with $modifyAction of $currentUser." "$scriptName"
   modifyStatus=$(curl -sfk -H "Authorization: Bearer $jamfAuthToken" -X PUT "$apiUrl/JSSResource/usergroups/id/$groupID" -H "Accept: application/xml" -H "Content-Type: application/xml" -T "$modifyXMLFile" --write-out "%{http_code}" -o /dev/null)
 
   case "$modifyStatus" in
     20*)
-      hyperLogger "$scriptName" "Action: $modifyAction Success!" "$scriptName"
+      echo "Action: $modifyAction Success!" "$scriptName"
       doOver="false"
       ;;
     *)
-      hyperLogger "$scriptName" "Action: $modifyAction Fail!" "$scriptName"
-      hyperLogger "$scriptName" "HTTP Code: $modifyStatus" "$scriptName"
+      echo "Action: $modifyAction Fail!" "$scriptName"
+      echo "HTTP Code: $modifyStatus" "$scriptName"
       if [[ "$modifyStatus" == "409" ]]
         then
           doOver="true"
@@ -92,8 +92,8 @@ function modifyUserGroup() {
 function errorExit() {
   status="$1"
   type="$2"
-  hyperLogger "$scriptName" "Process failed during: $type." "$scriptName"
-  hyperLogger "$scriptName" "HTTP Status code: $status" "$scriptName"
+  echo "Process failed during: $type." "$scriptName"
+  echo "HTTP Status code: $status" "$scriptName"
   exit 1
 }
 
@@ -103,14 +103,14 @@ function cleanUp() {
       modifyRetry="1"
     else
       if [[ "$modifyRetry" -le "$maxRetry" ]]; then
-        hyperLogger "$scriptName" "Retrying to modify group, attempt# $modifyRetry." "$scriptName"
+        echo "Retrying to modify group, attempt# $modifyRetry." "$scriptName"
         ((modifyRetry++))
       else
-        hyperLogger "$scriptName" "Reached max amount of retry attempts." "$scriptName"
+        echo "Reached max amount of retry attempts." "$scriptName"
         errorExit "$modifyStatus" "$modifyAction"
       fi
     fi
-    hyperLogger "$scriptName" "409 Error found when modifying group in Jamf. Retrying..." "$scriptName"
+    echo "409 Error found when modifying group in Jamf. Retrying..." "$scriptName"
     main
   fi
 
@@ -118,7 +118,7 @@ function cleanUp() {
     rm -f "$modifyXMLFile"
     success="$?"
     if [[ "$success" ]]; then
-      hyperLogger "$scriptName" "Removed $modifyXMLFile." "$scriptName"
+      echo "Removed $modifyXMLFile." "$scriptName"
     fi
   fi
 }
@@ -137,8 +137,8 @@ function main() {
 ##########
 # SCRIPT #
 ##########
-hyperLogger "$scriptName" "Initializing script." "$scriptName"
+echo "Initializing script." "$scriptName"
 main
-hyperLogger "$scriptName" "Script execution completed." "$scriptName"
+echo "Script execution completed." "$scriptName"
 
 exit 0

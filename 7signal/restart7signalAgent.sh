@@ -1,16 +1,13 @@
 #!/bin/bash
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## Name: restart7signalAgent.sh
 ## Creator: Brian Gullen for Rocket Companies 2022-12-28
 ## Restarts the 7signal MobileEye Agent
 ## Used after install to ensure agent is running and reports to console
 
 ## VARIABLES ##
-scriptName="restart7signal"
-getCurrentUser
-getCurrentUserUID
+currentUser=$( echo "show State:/Users/ConsoleUser" | scutil | awk '/Name :/ && ! /loginwindow/ { print $3 }' )
+currentUserUID="$(id -u $currentUser)"
 agentDir="/Library/LaunchAgents"
 agentName="com.sevensignal.mobileeyeagent"
 mobileEyeAgent="${agentDir}/${agentName}.plist"
@@ -20,18 +17,18 @@ mobileEyeAgent="${agentDir}/${agentName}.plist"
 function checkAndUnload () {
     if [[ -e "$mobileEyeAgent" ]]
         then
-            hyperLogger "$scriptName" "Found 7signal agent. Attempting to unload..."
+            echo "Found 7signal agent. Attempting to unload..."
             launchctl asuser "$currentUserUID" launchctl unload "$mobileEyeAgent"
             exitStatus="$?"
             if [[ "$exitStatus" -eq 0 ]]
                 then
-                    hyperLogger "$scriptName" "SUCCESS: 7signal agent has been unloaded."
+                    echo "SUCCESS: 7signal agent has been unloaded."
                 else
-                    hyperLogger "$scriptName" "ERROR: Unable to unload 7signal agent. Exiting..."
+                    echo "ERROR: Unable to unload 7signal agent. Exiting..."
                     exit 1
             fi
         else
-            hyperLogger "$scriptName" "ERROR: 7signal agent not found. This is a blocking error. Exiting..."
+            echo "ERROR: 7signal agent not found. This is a blocking error. Exiting..."
             exit 1
     fi
 }
@@ -39,18 +36,18 @@ function checkAndUnload () {
 function checkAndReload () {
     if [[ -e "$mobileEyeAgent" ]]
         then
-            hyperLogger "$scriptName" "Found 7signal agent. Attempting to reload..."
+            echo "Found 7signal agent. Attempting to reload..."
             launchctl asuser "$currentUserUID" launchctl load "$mobileEyeAgent"
             exitStatus="$?"
             if [[ "$exitStatus" -eq 0 ]]
                 then
-                    hyperLogger "$scriptName" "SUCCESS: 7signal agent has been reloaded."
+                    echo "SUCCESS: 7signal agent has been reloaded."
                 else
-                    hyperLogger "$scriptName" "ERROR: Unable to ureload 7signal agent. Exiting..."
+                    echo "ERROR: Unable to ureload 7signal agent. Exiting..."
                     exit 1
             fi
         else
-            hyperLogger "$scriptName" "ERROR: 7signal agent not found. This is a blocking error. Exiting..."
+            echo "ERROR: 7signal agent not found. This is a blocking error. Exiting..."
             exit 1
     fi
 }

@@ -4,8 +4,6 @@
 # Creator: Brian Gullen for Rocket Central 2021-10-19
 # Descirption: Script to kill caffeinate job
 
-source /etc/hyperfunctional || { exit 1; }
-
 
 ## -- VARIABLES -- ##
 

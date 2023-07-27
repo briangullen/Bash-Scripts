@@ -4,8 +4,6 @@
 # Creator: Brian Gullen for Rocket Central 2021-12-09
 # Descirption: Script to set Prisma settings
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## -- VARIABLES --##
 
 plistDir="/Library/Preferences"

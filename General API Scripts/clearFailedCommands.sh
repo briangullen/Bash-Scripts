@@ -11,8 +11,8 @@ source /etc/hyperapi || { exit 1; }
 
 scriptName="clearFailedCommands"
 
-[[ -z "$4" ]] && { hyperLogger "$scriptName" "ERROR: No input in \$4. Expecting: salt." exit 1; } || salt="$4"
-[[ -z "$5" ]] && { hyperLogger "$scriptName" "ERROR: No input in \$5. Expecting: passphrase." exit 1; } || passphrase="$5"
+[[ -z "$4" ]] && { echo "ERROR: No input in \$4. Expecting: salt." exit 1; } || salt="$4"
+[[ -z "$5" ]] && { echo "ERROR: No input in \$5. Expecting: passphrase." exit 1; } || passphrase="$5"
 apiUserBase="REDACTED"
 encApiPW="REDACTED"
 getSerialNumber
@@ -24,21 +24,21 @@ getJamfBinLocation
 
 
 function getJamfApiUrl () {
-    hyperLogger "$scriptName" "Checking Jamf Binary for API Base URL.."
+    echo "Checking Jamf Binary for API Base URL.."
     apiUrlBase="$("$jamfBin" checkJSSConnection | head -1 | grep "availability" | awk '{print $4}' | awk -F: '{print $1,":",$2}' | tr -d " ")"
     if [[ -n "$apiUrlBase" ]]
         then
-            hyperLogger "$scriptName" "Retrieved Jamf API Base URL: $apiUrlBase. Checking reachability."
+            echo "Retrieved Jamf API Base URL: $apiUrlBase. Checking reachability."
             phoneHome "${apiUrlBase#https://}" &>/dev/null
             if [[ "$siteNetwork" == "True" ]]
                 then
-                    hyperLogger "$scriptName" "Jamf Server can be reached. Continuing."
+                    echo "Jamf Server can be reached. Continuing."
                 else
-                    hyperLogger "$scriptName" "ERROR: Could not reach Jamf Server. This is a breaking error."
+                    echo "ERROR: Could not reach Jamf Server. This is a breaking error."
                     exit 1
                 fi
         else
-            hyperLogger "$scriptName" "ERROR: Could not determine Jamf URL. Exiting."
+            echo "ERROR: Could not determine Jamf URL. Exiting."
             exit 1
     fi
 }
@@ -49,10 +49,10 @@ function getComputerID() {
     computerRecordID=$(curl -s -H "Authorization: Bearer $jamfAuthToken" "$apiUrl/JSSResource/computers/serialnumber/$serialNumber" -H "Accept: application/xml" | xpath '//computer/general/id[1]' 2>&1 | grep id | sed 's/<id>//;s/<\/id>.*//')
     if [[ -z "$computerRecordID" ]]
         then
-            hyperLogger "$scriptName" "ERROR: Could not find Computer Record for serial number: $serialNumber. Exiting."
+            echo "ERROR: Could not find Computer Record for serial number: $serialNumber. Exiting."
             exit 1
         else
-            hyperLogger "$scriptName" "We're working with Computer Record: $computerRecordID."
+            echo "We're working with Computer Record: $computerRecordID."
     fi
 }
 

@@ -4,7 +4,6 @@
 # Creator: Brian Gullen for Rocket Central 2021-10-19
 # Descirption: Script to caffeinate mac for set time with variable inputs
 
-source /etc/hyperfunctional || { exit 1; }
 
 ##Notes:
 #### Executes caffeinate job based on parameter inputs in Jamf
@@ -41,7 +40,8 @@ source /etc/hyperfunctional || { exit 1; }
 ## -- VARIABLES -- ##
 
 
-getCurrentUserUID
+currentUser=$( echo "show State:/Users/ConsoleUser" | scutil | awk '/Name :/ && ! /loginwindow/ { print $3 }' )
+currentUserUID="$(id -u $currentUser)"
 dmgFolder="/Library/dmg"
 receiptName=".caffeinatePID"
 receiptPath="$dmgFolder/$receiptName"

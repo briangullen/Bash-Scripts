@@ -4,11 +4,8 @@
 # Creator: Brian Gullen for Rocket Central 2022-06-15
 # Description: Removes Ramp MulticastPlus application and all components
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## -- Variables -- ##
 
-scriptTag="rampUninstall"
 rampDir="/Applications/Ramp Multicast.app"
 rampDaemon="/Library/LaunchDaemons/com.ramp.pkg.RampMulticast.plist"
 rampCleanup="/Library/LaunchDaemons/com.ramp.pkg.RampMulticast.cleanup.plist"
@@ -21,9 +18,9 @@ rampAppSupport="/Library/Application Support/Ramp"
 function checkRampDir () {
 if [ -d "$rampDir" ]
     then
-        hyperLogger "$scriptTag" "Ramp Multicast is installed. We can proceed."
+        echo "Ramp Multicast is installed. We can proceed."
     else
-        hyperLogger "$scriptTag" "Ramp Multicast is not installed. No need to proceed. Exiting..."
+        echo "Ramp Multicast is not installed. No need to proceed. Exiting..."
         exit 0
 fi
 }
@@ -33,18 +30,18 @@ function unloadRampDaemon () {
 if [ -f "$rampDaemon" ]; then
 	hyperLogger	"$scriptTag" "Found $rampDaemon. Stopping daemon and removing..."
 	if launchctl unload "$rampDaemon"; then
-		hyperLogger "$scriptTag" "Successfully stopped $rampDaemon."
+		echo "Successfully stopped $rampDaemon."
 	else
-		hyperLogger "$scriptTag" "Unable to stop $rampDaemon."
+		echo "Unable to stop $rampDaemon."
 	fi
 		if rm -f "$rampDaemon"; then
-			hyperLogger "$scriptTag" "Successfully removed $rampDaemon."
+			echo "Successfully removed $rampDaemon."
 		else
-			hyperLogger "$scriptTag" "ERROR: failed to remove $rampDaemon."
+			echo "ERROR: failed to remove $rampDaemon."
 			exit 1
 		fi
 else
-	hyperLogger "$scriptTag" "Unable to locate $rampDaemon. Moving on."
+	echo "Unable to locate $rampDaemon. Moving on."
 fi
 }
 
@@ -53,18 +50,18 @@ function unloadRampCleanUp () {
 if [ -f "$rampCleanup" ]; then
 	hyperLogger	"$scriptTag" "Found $rampCleanup. Stopping daemon and removing..."
 	if launchctl unload "$rampCleanup"; then
-		hyperLogger "$scriptTag" "Successfully stopped $rampCleanup."
+		echo "Successfully stopped $rampCleanup."
 	else
-		hyperLogger "$scriptTag" "Unable to stop $rampCleanup."
+		echo "Unable to stop $rampCleanup."
 	fi
 		if rm -f "$rampCleanup"; then
-			hyperLogger "$scriptTag" "Successfully removed $rampCleanup."
+			echo "Successfully removed $rampCleanup."
 		else
-			hyperLogger "$scriptTag" "ERROR: failed to remove $rampCleanup."
+			echo "ERROR: failed to remove $rampCleanup."
 			exit 1
 		fi
 else
-    hyperLogger "$scriptTag" "Unable to locate $rampCleanup. Moving on."
+    echo "Unable to locate $rampCleanup. Moving on."
 fi
 }
 
@@ -73,13 +70,13 @@ function cleanRampLogs () {
 if [ -d "$rampLogs" ]; then
 	hyperLogger	"$scriptTag" "Found $rampLogs. Let's try to remove them."
     if rm -rf "$rampLogs"; then
-        hyperLogger "$scriptTag" "Successfully removed Ramp multicast log directory."
+        echo "Successfully removed Ramp multicast log directory."
     else
-        hyperLogger "$scriptTag" "ERROR: Unable to remove Ramp log directory"
+        echo "ERROR: Unable to remove Ramp log directory"
         exit 1
     fi
 else
-    hyperLogger "$scriptTag" "$rampLogs does not exist. That's unexpected. Let's move on."
+    echo "$rampLogs does not exist. That's unexpected. Let's move on."
 fi
 }
 
@@ -88,22 +85,22 @@ function cleanRampAppSupport () {
 if [ -d "$rampAppSupport" ]; then
 	hyperLogger	"$scriptTag" "Found $rampAppSupport. Let's try to remove them."
     if rm -rf "$rampAppSupport"; then
-        hyperLogger "$scriptTag" "Successfully removed $rampAppSupport"
+        echo "Successfully removed $rampAppSupport"
     else
-        hyperLogger "$scriptTag" "ERROR: Unable to remove $rampAppSupport"
+        echo "ERROR: Unable to remove $rampAppSupport"
         exit 1
     fi
 else
-    hyperLogger "$scriptTag" "$rampAppSupport does not exist. That's unexpected. Let's move on."
+    echo "$rampAppSupport does not exist. That's unexpected. Let's move on."
 fi
 }
 
 #Removes Ramp app bundle from Applications
 function cleanRampDir () {
 if rm -rf "$rampDir"; then
-    hyperLogger "$scriptTag" "Successfully removed $rampDir."
+    echo "Successfully removed $rampDir."
 else
-    hyperLogger "$scriptTag" "ERROR: Unable to remove $rampDir."
+    echo "ERROR: Unable to remove $rampDir."
     exit 1
 fi
 }

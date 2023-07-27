@@ -10,8 +10,8 @@ source /etc/hyperapi || { exit 1; }
 #############
 
 logTag="deleteComputerRecord"
-[[ -z "${4}" ]] && { hyperLogger "$logTag" "No salt passed in parameter 4.  This is required.  Exiting"; exit 0; } || salt="${4}"
-[[ -z "${5}" ]] && { hyperLogger "$logTag" "No passphrase passed in parameter 5.  This is required.  Exiting"; exit 0; } || passphrase="${5}"
+[[ -z "${4}" ]] && { echo "No salt passed in parameter 4.  This is required.  Exiting"; exit 0; } || salt="${4}"
+[[ -z "${5}" ]] && { echo "No passphrase passed in parameter 5.  This is required.  Exiting"; exit 0; } || passphrase="${5}"
 apiUserBase="REDACTED"
 encApiPW="REDACTED"
 getSerialNumber
@@ -22,21 +22,21 @@ getJamfBinLocation
 #############
 
 function getJamfApiUrl () {
-    hyperLogger "$logTag" "Checking Jamf Binary for API Base URL.."
+    echo "Checking Jamf Binary for API Base URL.."
     apiUrlBase="$("$jamfBin" checkJSSConnection | head -1 | grep "availability" | awk '{print $4}' | awk -F: '{print $1,":",$2}' | tr -d " ")"
     if [[ -n "$apiUrlBase" ]]
         then
-            hyperLogger "$logTag" "Retrieved Jamf API Base URL: $apiUrlBase. Checking reachability."
+            echo "Retrieved Jamf API Base URL: $apiUrlBase. Checking reachability."
             phoneHome "${apiUrlBase#https://}" &>/dev/null
             if [[ "$siteNetwork" == "True" ]]
                 then
-                    hyperLogger "$logTag" "Jamf Server can be reached. Continuing."
+                    echo "Jamf Server can be reached. Continuing."
                 else
-                    hyperLogger "$logTag" "ERROR: Could not reach Jamf Server. This is a breaking error."
+                    echo "ERROR: Could not reach Jamf Server. This is a breaking error."
                     exit 1
                 fi
         else
-            hyperLogger "$logTag" "ERROR: Could not determine Jamf URL. Exiting."
+            echo "ERROR: Could not determine Jamf URL. Exiting."
             exit 1
     fi
 }
@@ -48,18 +48,18 @@ function getComputerID() {
     
     if [[ -z "$computerRecordID" ]]
         then
-            hyperLogger "$logTag" "ERROR: Could not find Computer Record for serial number: $serialNumber. Exiting."
+            echo "ERROR: Could not find Computer Record for serial number: $serialNumber. Exiting."
             exit 1
         else
-            hyperLogger "$logTag" "We're working with Computer Record: $computerRecordID."
+            echo "We're working with Computer Record: $computerRecordID."
     fi
 }
 
 function deleteComputerRecord() {
     checkJamfApiTokenExpiry
-    hyperLogger "$logTag" "Attempting to remove computer record..."
+    echo "Attempting to remove computer record..."
     deleteStatus=$(curl -sfk -H "Authorization: Bearer $jamfAuthToken" "$apiUrl/JSSResource/computers/id/$computerRecordID" -X DELETE  --write-out "%{http_code}" -o /dev/null 2>&1)
-    hyperLogger "$logTag" "Return status: $deleteStatus."
+    echo "Return status: $deleteStatus."
 }
 
 function main() {

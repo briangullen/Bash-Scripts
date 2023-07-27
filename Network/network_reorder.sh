@@ -4,8 +4,6 @@
 # Creator: Brian Gullen for Rocket Central 2021-11-24
 # Descirption: Script to set Wi-Fi or Ethernet as primary connection based on input
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## -- Variables --##
 mode="$4"
 checkTopService=$( networksetup -listnetworkserviceorder | grep "(1)" | cut -d')' -f2 | xargs )
@@ -22,10 +20,10 @@ ethernetElevated="User elevated Ethernet"
 function createReceipt () {
 if [[ ! -e "$receiptPath" ]]
     then
-        hyperLogger $logTag "Receipt file not found. Creating "$receiptPath" and writing receipt."
+        echo "Receipt file not found. Creating "$receiptPath" and writing receipt."
         touch "$receiptPath"
     else
-        hyperLogger $logTag "Receipt file already exists. Moving on."
+        echo "Receipt file already exists. Moving on."
 fi
 }
 
@@ -70,9 +68,9 @@ function checkTheWifi () {
 checkTheServices=$( networksetup -listnetworkserviceorder | grep "(1)" | cut -d')' -f2 | xargs )
 if [[ "$checkTheServices" == "Wi-Fi" ]]
     then
-        hyperLogger $logTag "Wifi is now atop the service order."
+        echo "Wifi is now atop the service order."
     else
-        hyperLogger $logTag "Something went wrong. Wifi is NOT atop the service order."
+        echo "Something went wrong. Wifi is NOT atop the service order."
         exit 1
 fi
 }

@@ -4,12 +4,10 @@
 # Creator: Brian Gullen for Rocket Central 2022-01-5
 # Descirption: Script to fix misnamed cert from Prisma install
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## -- VARIABLES -- ##
 
-getCurrentUser
-getCurrentUserUID
+currentUser=$( echo "show State:/Users/ConsoleUser" | scutil | awk '/Name :/ && ! /loginwindow/ { print $3 }' )
+currentUserUID="$(id -u $currentUser)"
 logTag="gpPreFlightRemoval"
 globalProtectDir="/Applications/GlobalProtect.app"
 scriptDir="/private/tmp/removeGlobalProtect.scpt"

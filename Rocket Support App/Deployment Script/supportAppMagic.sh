@@ -1,9 +1,6 @@
 #!/bin/bash
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## <-- Variables --> ##
-scriptLog="supportAppMagic"
 supportAppDir="/Library/dmg/SupportApp"
 extNameA="supportAppExtA.sh"
 extNameB="supportAppExtB.sh"
@@ -132,82 +129,82 @@ EOF
 function checkDirectory () {
 if [[ ! -d "$supportAppDir" ]]
     then
-        hyperLogger "$scriptLog" "$supportAppDir does not exist. Let's create it."
+        echo "$supportAppDir does not exist. Let's create it."
             if mkdir -p "$supportAppDir"
                 then
-                    hyperLogger "$scriptLog" "Successfully created $supportAppDir."
+                    echo "Successfully created $supportAppDir."
                 else
-                    hyperLogger "$scriptLog" "ERROR: Failed to create $supportAppDir."
+                    echo "ERROR: Failed to create $supportAppDir."
                     exit 1
             fi
     else
-        hyperLogger "$scriptLog" "$supportAppDir already exists. Moving on."
+        echo "$supportAppDir already exists. Moving on."
 fi
 }
 
 function createExtA () {
 if ! echo "$contentsExtA" > "$supportAppDir/$extNameA"
     then
-        hyperLogger "$scriptLog" "ERROR: Installing $extNameA into $supportAppDir failed"
+        echo "ERROR: Installing $extNameA into $supportAppDir failed"
     else
-        hyperLogger "$scriptLog" "Successfully installed $extNameA into $supportAppDir"
+        echo "Successfully installed $extNameA into $supportAppDir"
 fi
 
 if ! chmod +x "$supportAppDir/$extNameA"
     then
-        hyperLogger "$scriptLog" "ERROR: Unable to make $extNameA executable"
+        echo "ERROR: Unable to make $extNameA executable"
     else
-        hyperLogger "$scriptLog" "$extNameA is now executable"
+        echo "$extNameA is now executable"
 fi  
 }
 
 function createExtB () {
 if ! echo "$contentsExtB" > "$supportAppDir/$extNameB"
     then
-        hyperLogger "$scriptLog" "ERROR: Installing $extNameB into $supportAppDir failed"
+        echo "ERROR: Installing $extNameB into $supportAppDir failed"
     else
-        hyperLogger "$scriptLog" "Successfully installed $extNameB into $supportAppDir"
+        echo "Successfully installed $extNameB into $supportAppDir"
 fi
 
 if ! chmod +x "$supportAppDir/$extNameB"
     then
-        hyperLogger "$scriptLog" "ERROR: Unable to make $extNameB executable"
+        echo "ERROR: Unable to make $extNameB executable"
     else
-        hyperLogger "$scriptLog" "$extNameB is now executable"
+        echo "$extNameB is now executable"
 fi  
 }
 
 function createExtCombined () {
 if ! echo "$contentsExtCombined" > "$supportAppDir/$extNameCombined"
     then
-        hyperLogger "$scriptLog" "ERROR: Installing $extNameCombined into $supportAppDir failed"
+        echo "ERROR: Installing $extNameCombined into $supportAppDir failed"
     else
-        hyperLogger "$scriptLog" "Successfully installed $extNameCombined into $supportAppDir"
+        echo "Successfully installed $extNameCombined into $supportAppDir"
 fi
 
 if ! chmod +x "$supportAppDir/$extNameCombined"
     then
-        hyperLogger "$scriptLog" "ERROR: Unable to make $extNameCombined executable"
+        echo "ERROR: Unable to make $extNameCombined executable"
     else
-        hyperLogger "$scriptLog" "$extNameCombined is now executable"
+        echo "$extNameCombined is now executable"
 fi  
 }
 
 function installAppIcon () {
 if curl -s "$rcAppIconUrl" > $rcAppIcon
     then
-        hyperLogger "$scriptLog" "Successfully downloaded App icon."
+        echo "Successfully downloaded App icon."
     else
-        hyperLogger "$scriptLog" "ERROR: Unable to download App icon."
+        echo "ERROR: Unable to download App icon."
 fi
 }
 
 function installMenuBarIcon () {
 if curl -s "$rcMenuBarIconUrl" > $rcMenuBarIcon
     then
-        hyperLogger "$scriptLog" "Successfully downloaded Menu Bar icon."
+        echo "Successfully downloaded Menu Bar icon."
     else
-        hyperLogger "$scriptLog" "ERROR: Unable to download App icon."
+        echo "ERROR: Unable to download App icon."
 fi
 }
 

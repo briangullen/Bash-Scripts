@@ -4,9 +4,6 @@
 # Creator: Brian Gullen for Rocket Central 2021-10-19
 # Descirption: Script to clean up launchds from caffeinate job
 
-source /etc/hyperfunctional || { exit 1; }
-
-
 ## -- VARIABLES -- ##
 
 

@@ -4,14 +4,12 @@
 # Creator: Brian Gullen for Rocket Central 2022-03-11
 # Descirption: The script will place a sign-in token for configuring Slack default instance
 
-source /etc/hyperfunctional || { exit 1; }
-
 ## -- VARIABLES -- ##
 
 ## $4: preferredToken. REQUIRED. Sets slackToken variable for Slack signin.
 [[ -z "${4}" ]] && { echo "ERROR: Nothing set in \$4. REQUIRED: Sets Slack signin token."; exit 1; } || preferredToken="${4}"
 
-getCurrentUser
+currentUser=$( echo "show State:/Users/ConsoleUser" | scutil | awk '/Name :/ && ! /loginwindow/ { print $3 }' )
 currentUserGID="$(dscl . -read /Users/$currentUser PrimaryGroupID | awk '{print $2}')"
 tokenPath="/Users/$currentUser/Downloads/Signin.slacktoken"
 tokenOwner=$(ls -l "$tokenPath" | awk '{print $3}')

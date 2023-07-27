@@ -7,20 +7,18 @@
 ## Inputs:
 #### $4 - vendor uninstall script path 
 
-source /etc/hyperfunctional || { exit 1; }
-
 ####################################
 ## Variables #######################
 ####################################
 scriptName="runVendorUninstaller"
-[[ "${4}" == "" ]] && { hyperLogger "$scriptName" "ERROR: Nothing set in \$4. REQUIRED: path to script to run. Exiting."; exit 1; } || scriptPath="${4}"
+[[ "${4}" == "" ]] && { echo "ERROR: Nothing set in \$4. REQUIRED: path to script to run. Exiting."; exit 1; } || scriptPath="${4}"
 
 
 ####################################
 ## Script  #########################
 ####################################
-hyperLogger "$scriptName" "Executing the uninstall script: ${scriptPath}..."
+echo "Executing the uninstall script: ${scriptPath}..."
 eval "${scriptPath}"
 exitStatus="$?"
-hyperLogger "$scriptName" "Script exited with status: ${exitStatus}" 
+echo "Script exited with status: ${exitStatus}" 
 exit $exitStatus
