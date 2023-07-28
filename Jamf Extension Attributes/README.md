@@ -16,3 +16,6 @@ Determines version of 7signal Mobile Eye
 ### iManage Server
 Gets current default server for iManage desktop app
 
+### CatDVCCPanel Presence
+Determines if CatDV Panel for Adobe Creative Cloud is installed
+
