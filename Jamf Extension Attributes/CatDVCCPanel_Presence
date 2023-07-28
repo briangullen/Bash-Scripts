@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+upiaDir="/Library/Application Support/Adobe/Adobe Desktop Common/RemoteComponents/UPI/UnifiedPluginInstallerAgent/UnifiedPluginInstallerAgent.app/Contents/MacOS/UnifiedPluginInstallerAgent"
+
+if [[ -e "$upiaDir" ]]
+    then
+        catDVCCPanelPresence="$($upiaDir --list all | grep CatDVCCPanel)"
+        if [[ -n "$catDVCCPanelPresence" ]]
+            then
+                echo "<result>Present</result>"
+            else
+                echo "<result>Absent</result>"
+        fi
+    else
+        echo "<result>Absent</result>"
+fi
+
+exit 0
