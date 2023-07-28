@@ -1,7 +1,7 @@
 # Bash-Scripts
 
 ## Overview
-This is a colleciton of bash scripts I've created. They range from pre-install, post-install and general use scripts. Most of these have been created during my time as a macOS Systems Engineer. These scripts are designed primarily to be deployed through Jamf policies
+This is a colleciton of bash scripts I've created. They range from pre-install, post-install and general use scripts. Most of these have been created during my time as a macOS Endpoint Systems Engineer. These scripts are designed primarily to be deployed through Jamf.
 
 ### Caffeinate
 Multi-script workflow that caffeinates a workstation for a specified amount of time with given variables
@@ -47,3 +47,9 @@ Houses all scripts related to Microsoft Teams
 
 ### 7signal
 Houses all scripts related to deployment of 7signal MobileEye
+
+### CatDV
+Houses all scripts related to deployment of CatDV Panel for Adobe Creative Cloud
+
+### Ivanti Neurons
+Houses all scripts related to deployment of Ivanti Neurons
